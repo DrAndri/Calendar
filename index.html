@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Dagatal Starmýrar</title>
+<!--meta name="viewport" content="user-scalable=no"-->
+<link rel="icon" type="image/png" href="http://starmyri.tk/Icons/favicon-32x32.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="http://starmyri.tk/Icons/favicon-16x16.png" sizes="16x16" />
+<link rel='stylesheet' type='text/css' href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/start/jquery-ui.css' />
+<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'></script>
+<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js'></script>
+<link rel='stylesheet' type='text/css' href='http://starmyri.tk/Calendar/jquery.weekcalendar_07.07.2017.min.css' />
+<script type='text/javascript' src='http://starmyri.tk/Calendar/jquery.weekcalendar_07.07.2017.min.js'></script>
+<script type="text/javascript" src="http://starmyri.tk/Calendar/libs/jquery-1.8.0.min.js"></script>
+<script type='text/javascript' src='http://starmyri.tk/Calendar/libs/jquery-1.11.4.ui.min.js'></script>
+
+<link rel="stylesheet" href="http://starmyri.tk/Calendar/pickadate/themes/default_07.07.2017.min.css">
+<link rel="stylesheet" href="http://starmyri.tk/Calendar/pickadate/themes/default.date.min.css">
+<link rel="stylesheet" href="http://starmyri.tk/Calendar/pickadate/themes/default.time.min.css">
+<script type='text/javascript' src='http://starmyri.tk/Calendar/pickadate/picker.min.js'></script>
+<script type='text/javascript' src='http://starmyri.tk/Calendar/pickadate/picker.date.min.js'></script>
+<script type='text/javascript' src='http://starmyri.tk/Calendar/pickadate/picker.time.min.js'></script>
+
+<link href="http://starmyri.tk/Calendar/bower_components/air-datepicker/dist/css/datepicker.min.css" rel="stylesheet" type="text/css">
+<script src="http://starmyri.tk/Calendar/bower_components/air-datepicker/dist/js/datepicker.min.js"></script>
+<!-- Include English language -->
+<script src="http://starmyri.tk/Calendar/bower_components/air-datepicker/dist/js/i18n/datepicker.en.js"></script>
+
+<link href="http://starmyri.tk/Calendar/magicSuggest/magicsuggest-min.css" rel="stylesheet">
+<script src="http://starmyri.tk/Calendar/magicSuggest/magicsuggest-min.js"></script>
+<link href="http://starmyri.tk/Calendar/jquery.weekLine.min.css" rel="stylesheet">
+<link href="http://starmyri.tk/Calendar/jquery.weekLine-white.min.css" rel="stylesheet">
+<script type='text/javascript' src='http://starmyri.tk/Calendar/jquery.weekLine.min.js'></script>
+<script type="text/javascript">$j = $.noConflict(true);</script>
+<link rel='stylesheet' type='text/css' href='http://starmyri.tk/Calendar/reset.min.css' />
+<link rel='stylesheet' type='text/css' href='http://starmyri.tk/Calendar/calendar_07.08.17.min.css' />
+<link rel='stylesheet' type='text/css' href='http://starmyri.tk/Calendar/burger-menu.min.css' />
+<script type="text/javascript" src="http://starmyri.tk/socket.io/socket.io.js"></script>
+
+<script type='text/javascript' src='http://starmyri.tk/Calendar/calendar_07.07.2017.min.js'></script>
+<script type='text/javascript' src='http://starmyri.tk/Calendar/preLogin_07.07.2017.min.js'></script>
+<meta charset="UTF-8">
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-103808486-1', {siteSpeedSampleRate: 100});
+  ga('send', 'pageview');
+
+</script>
+</head>
+<body>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.10&appId=448772061955380";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<object id="loading-spinner" data="http://starmyri.tk/Calendar/images/spinner.svg" type="image/svg+xml"></object>
+<div id="overlay">
+    <div class="accessDenied btn-danger">
+      <center>
+        <img src="http://starmyri.tk/Calendar/images/accessDenied.png">
+        <p>Þú hefur ekki leyfi til að skoða þessa síðu. </p>
+        <p>Ef þú ert nýbúinn að fá aðgang prufaðu að endurhlaða þessa síðu. </p>
+        <p>Ef þú kemst ekki inn sendu þá endilega línu á <a href="mailto:irdnaandri@gmail.com?Subject=Vantar%20aðgang%20að%20starmyri.tk" target="_top">irdnaandri@gmail.com</a> og taktu fram hver þú ert og af hverju þú þarft aðgang.</p>
+        <p>Þú ert loggaður inn sem: </p><div id="fbName"></div>
+        <a class="btn red" onclick="logout()">Logout</a>
+      </center>
+    </div>
+    <div id="fb-login">
+        <div class="fb-login-button" onlogin="checkLoginState();" data-width="400px" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="true"></div>
+        <!--div class="fb-login-button" data-max-rows="1" onlogin="checkLoginState();" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div-->
+        <div id="status">
+        </div>
+    </div>
+</div>
+
+<div class="afterLogin">
+    <h1 id="page-title">www.starmyri.tk</h1>
+    <div id="burger-menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div id="side-menu">
+        <label>Days to show: </label>
+        <input id="daysToShow-input" type="number" min="4" onchange="setDaysToShow();">
+        <label>Go to date: </label>
+        <input class="datepicker-input" id="calendar-datepicker" name="date" type="text" size="20" autofocus="false">
+    </div>
+  <div class="calFrame">
+      <div class="titleHeader">
+          <div class="browserButtonContainer">
+            <a href="http://starmyri.tk/owncloud" class="btn browserButton ui-state-default ui-corner-all" onclick="ga('send', {hitType: 'event', eventCategory: 'button', eventAction: 'owncloud'});">Netdrif</a>
+        </div>
+        <div class="colorFrame">
+            <div class="input-color">
+              <p>Left Room</p>
+              <div class="color-box" style="background-color: #B65700;"></div>
+            </div>
+            <div class="input-color">
+              <p>Right Room</p>
+              <div class="color-box" style="background-color: #009200;"></div>
+            </div>
+            <div class="input-color">
+              <p>Both Rooms</p>
+              <div class="color-box" style="background-color: #B60000;"></div>
+            </div>
+        </div>
+        <div class="rentBalance">
+        </div>
+      </div>
+      <div id='calendar'></div>
+      <div class="round-button"><div class="round-button-circle"><a onclick="$calendar.weekCalendar('createNewEvent');" class="round-button">+</a></div></div>
+  </div>
+  <div id="event_edit_container">
+    <form>
+        <!-- grab focus so no input fields pop up -->
+        <input type="text" style="position: fixed; left: -10000000px;"/>
+      <ul>
+        <li>
+            <table class="datepicker-table">
+                <tr>
+                  <th><label class="datepicker-label" id="start-label" for="start-datepicker">Start: </label></th>
+                  <th><label class="datepicker-label" id="end-label" for="end-datepicker">End: </label></th>
+                </tr><tr>
+                    <td><input class="datepicker-input" id="start-datepicker" name="date" type="text" size="30" autofocus="false"></td>
+                    <td><input class="datepicker-input" id="end-datepicker" name="date" type="text" size="30" autofocus="false"></td>
+                </tr><tr>
+                  <td><input class="timepicker-input" id="start-timepicker" type="time" name="time" size="30" autofocus="false"></td>
+                  <td><input class="timepicker-input" id="end-timepicker" type="time" name="time" size="30" autofocus="false"></td>
+                </tr>
+            </table>
+        </li>
+        <li>
+          <label for="room">Room: </label><select name="room" id="room-select">
+            <option value="R">Right Room</option>
+            <option value="L">Left Room</option>
+            <option value="B">Both Rooms</option></select>
+        </li>
+        <li>
+          <label for="title">Band: </label><div id="title"></div>
+        </li>
+        <li>
+          <label for="body">Info: </label><textarea id="body" name="body"></textarea>
+        </li>
+        <li id="editAllOptions">
+          <label for="editAllCheckbox"><input type="checkbox" name="editAllCheckbox" id="editAllCheckbox">Edit all events in series</label>
+        </li>
+        <li>
+          <button type="button" class="ui-state-default ui-corner-all" id="recurringOptionsButton" onclick="setRecurringVisibility(!recurringIsVisible);">Repeat</button><button type="button" id="switch-week-or-picker" class="ui-state-default ui-corner-all" onclick="setWeekLineVisibility(!weeklineIsVisible);">Select days</button>
+        </li>
+        <li id="recurringOptions" style="display: none;">
+            <div id="week-series">
+                <table class="datepicker-table">
+                    <tr>
+                        <th><label class="datepicker-label" for="startdate">Start date: </label></th>
+                        <th><label class="datepicker-label" for="enddate">End date: </label></th>
+                    </tr><tr>
+                        <td><input class="datepicker-input" id="series-start-datepicker" name="startdate" type="text" size="30" autofocus="false"></td>
+                        <td><input class="datepicker-input" id="series-end-datepicker" name="enddate" type="text" size="30" autofocus="false"></td>
+                    </tr>
+                </table class="datepicker-table">
+                <div id="weekline-div">
+                  <span id="weekline" class="weekDays-white"></span>
+                </div>
+            </div>
+            <div id="days-series" style="display: none;">
+                <label for="multi-datepicker">Select days: </label>
+                <input type="text" data-position='top left' data-language='en' data-multiple-dates=true data-multiple-dates-separator=", " id="multi-datepicker" name="multi-datepicker">
+            </div>
+        </li>
+        <li>
+          <label name="errorMsg" id="errorMsg"></label>
+        </li>
+      </ul>
+    </form>
+  </div>
+</div>
+</body>
+</html>
