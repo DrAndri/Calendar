@@ -388,7 +388,8 @@ h1 {
 
 
 .round-button {
-	width: 50px;
+	width: 75px;
+	height: 75px;
 	position: absolute;
 	bottom: 0;
 	right: 0;
