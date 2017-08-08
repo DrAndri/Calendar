@@ -435,7 +435,7 @@ h1 {
 	padding-left: 1em;
 }
 
-#daysToShow-input, #calendar-datepicker{
+#daysToShow-input, #timeslotHeight-input, #calendar-datepicker{
 	width: 4em !important;
 }
 

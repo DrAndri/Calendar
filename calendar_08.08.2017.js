@@ -5,7 +5,10 @@ var users = [];
 var nextFreeId = 1;
 var MILLISECONDS_IN_MINUTE = 60000;
 var MINUTES_IN_DAY = 1440;
-var daysToShow = parseInt(readCookie("daysToShow") == null?Math.round(window.innerWidth/220):readCookie("daysToShow"));
+var daysToShow = readCookie("daysToShow") == null?Math.round(window.innerWidth/220):parseInt(readCookie("daysToShow"));
+var timeslotHeight = readCookie("timeslotHeight") == null?(mobile?30:15):parseInt(readCookie("timeslotHeight"));
+var mobile = false;
+if (typeof window.orientation !== 'undefined') { mobile = true; }
 var magicConfigTitle = {
                      data: users,
                      typeDelay: 10,
@@ -139,14 +142,14 @@ function setDaysToShow(){
     });
 }
 
-function setDaysToShow(){
-    var value = $("#daysToShow-input").val();
-    createCookie("daysToShow", value);
-    $('#calendar').weekCalendar("setDaysToShow", value);
+function setTimeslotHeight(){
+    var value = $("#timeslotHeight-input").val();
+    createCookie("timeslotHeight", value);
+    $('#calendar').weekCalendar("setTimeslotHeight", value);
     ga('send', {
       hitType: 'event',
       eventCategory: 'Settings',
-      eventAction: 'daysToShow',
+      eventAction: 'timeslotHeight',
       eventLabel: value
     });
 }
@@ -158,6 +161,7 @@ $(document).ready(function() {
       return false;
     });
     $('#daysToShow-input').val(daysToShow);
+    $('#timeslotHeight-input').val(timeslotHeight);
     $j('#weekline').weekLine();
     $j("#weekline").removeClass("weekDays-dark");
     $j("#multi-datepicker").datepicker();
@@ -436,6 +440,7 @@ $(document).ready(function() {
       daysToShow : daysToShow,
       overflowHours: overflowHours,
       scrollToCurrentHourSubtract: 2,
+      timeslotHeight: timeslotHeight,
 
       height : function($calendar) {
          return $(window).height() - $("h1").outerHeight() - 1;

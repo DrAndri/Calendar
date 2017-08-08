@@ -17,9 +17,6 @@
 
 (function($) {
 
-    var mobile = false;
-    if (typeof window.orientation !== 'undefined') { mobile = true; }
-
    $.widget("ui.weekCalendar", {
 
       /***********************
@@ -1052,6 +1049,26 @@
       /**
         * change the number of days to show
         */
+      setTimeslotHeight: function(timeslotHeight) {
+          var self = this;
+          self.options.timeslotHeight = parseInt(timeslotHeight);
+          $(self.element).html('');
+          self._renderCalendar();
+          self._loadCalEvents();
+          self._resizeCalendar();
+          self.scrollToCurrentHour();
+
+          if (this.options.resizeEvent) {
+            $(window).unbind(this.options.resizeEvent);
+            $(window).bind(this.options.resizeEvent, function() {
+              self._resizeCalendar();
+            });
+        }
+      },
+
+      /**
+        * change the starting and end hours of the calendar
+        */
       setOverflowHours: function(overflowHours) {
           var self = this;
           var overflowHoursInt = parseInt(overflowHours)
@@ -1421,7 +1438,7 @@
          endParam : "end",
          businessHours : {start: 8, end: 18, limitDisplay : false},
          newEventText : "New Event",
-         timeslotHeight: mobile?30:15,
+         timeslotHeight: 30,
          defaultEventLength : 4,
          timeslotsPerHour : 4,
          buttons : true,

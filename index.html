@@ -10,7 +10,7 @@
 <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'></script>
 <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js'></script>
 <link rel='stylesheet' type='text/css' href='http://starmyri.tk/Calendar/jquery.weekcalendar_07.07.2017.min.css' />
-<script type='text/javascript' src='http://starmyri.tk/Calendar/jquery.weekcalendar_07.07.2017.min.js'></script>
+<script type='text/javascript' src='http://starmyri.tk/Calendar/jquery.weekcalendar_08.08.2017.min.js'></script>
 <script type="text/javascript" src="http://starmyri.tk/Calendar/libs/jquery-1.8.0.min.js"></script>
 <script type='text/javascript' src='http://starmyri.tk/Calendar/libs/jquery-1.11.4.ui.min.js'></script>
 
@@ -33,11 +33,11 @@
 <script type='text/javascript' src='http://starmyri.tk/Calendar/jquery.weekLine.min.js'></script>
 <script type="text/javascript">$j = $.noConflict(true);</script>
 <link rel='stylesheet' type='text/css' href='http://starmyri.tk/Calendar/reset.min.css' />
-<link rel='stylesheet' type='text/css' href='http://starmyri.tk/Calendar/calendar_07.08.17.min.css' />
+<link rel='stylesheet' type='text/css' href='http://starmyri.tk/Calendar/calendar_08.08.17.min.css' />
 <link rel='stylesheet' type='text/css' href='http://starmyri.tk/Calendar/burger-menu.min.css' />
 <script type="text/javascript" src="http://starmyri.tk/socket.io/socket.io.js"></script>
 
-<script type='text/javascript' src='http://starmyri.tk/Calendar/calendar_07.07.2017.min.js'></script>
+<script type='text/javascript' src='http://starmyri.tk/Calendar/calendar_08.08.2017.min.js'></script>
 <script type='text/javascript' src='http://starmyri.tk/Calendar/preLogin_07.07.2017.min.js'></script>
 <meta charset="UTF-8">
 <script async="" src="https://www.google-analytics.com/analytics.js"></script>
@@ -90,7 +90,9 @@
     </div>
     <div id="side-menu">
         <label>Days to show: </label>
-        <input id="daysToShow-input" type="number" min="4" onchange="setDaysToShow();">
+        <input id="daysToShow-input" type="number" min="1" onchange="setDaysToShow();">
+        <label>Height of time slots: </label>
+        <input id="timeslotHeight-input" type="number" min="1" onchange="setTimeslotHeight();">
         <label>Go to date: </label>
         <input class="datepicker-input" id="calendar-datepicker" name="date" type="text" size="20" autofocus="false">
     </div>
