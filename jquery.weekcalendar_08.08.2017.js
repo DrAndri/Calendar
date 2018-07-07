@@ -50,6 +50,7 @@
           self._renderCalendar();
           self._resizeCalendar();
           self._loadCalEvents(this.element.data("startDate")); //reload with existing week
+          self.today();
       },
 
       /*

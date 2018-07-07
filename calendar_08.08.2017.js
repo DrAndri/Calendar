@@ -1,5 +1,6 @@
-var socket = io.connect('http://starmyri.tk');
+var socket = io.connect('http://starmyri.ga');
 var accessToken;
+var name;
 var users = [];
 //TODO: implement better id management;
 var nextFreeId = 1;
@@ -21,35 +22,28 @@ var magicConfigTitle = {
                      strictSuggest: true,
                      useZebraStyle: true
                   };
-function createCookie(name,value,days) {
-    var expires = "";
-    if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days*24*60*60*1000));
-        expires = "; expires=" + date.toUTCString();
+function createCookie(name,value) {
+    if (typeof(Storage) !== "undefined") {
+        localStorage.setItem(name, value);
+    } else {
+        console.log("No localStorage detected");
     }
-    document.cookie = name + "=" + value + expires + "; path=/";
 }
 
 function readCookie(name) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    if (typeof(Storage) !== "undefined") {
+        console.log("Getting");
+        return localStorage.getItem(name);
+    } else {
+        console.log("No localStorage detected");
+        return null;
     }
-    return null;
-}
-
-function eraseCookie(name) {
-    createCookie(name,"",-1);
 }
 
 function onFocus(){
     if(!socket)
         location.reload();
-    else
+    else if(!$(':focus').is('input') && !$(':focus').is('.ms-trigger'))
 	   $('#calendar').weekCalendar("refresh");
 };
 
@@ -305,8 +299,6 @@ $(document).ready(function() {
       calEvent.start = calEvent.start.getTime()/1000;
       calEvent.end = calEvent.end.getTime()/1000;
       calEvent.creator = name;
-      if(!calEvent.published)
-         calEvent.accessToken = accessToken;
       if(calEvent.seriesStart && calEvent.seriesEnd)
         socket.emit('saveRecurringEventWithSeries', {recurringEvent: calEvent, charge: charge});
       else if(calEvent.recurringDates)
@@ -318,8 +310,6 @@ $(document).ready(function() {
       calEvent.start = calEvent.start.getTime()/1000;
       calEvent.end = calEvent.end.getTime()/1000;
       calEvent.creator = name;
-      if(!calEvent.published)
-         calEvent.accessToken = accessToken;
       socket.emit('editEvent', {events: calEvent, charge: charge});
    };
    var updateRecurringInDatabase = function(data) {
@@ -555,7 +545,6 @@ $(document).ready(function() {
 
                     calEvent.body = bodyField.val();
                     calEvent.room = roomField.val();
-                    calEvent.published = 1;
 
                     var eventLabel = "singleEvent";
                     if(recurringIsVisible){
@@ -588,7 +577,6 @@ $(document).ready(function() {
          }).show();
       },
       eventDrop : function(calEvent, $event) {
-        calEvent.published = 1;
          updateDatabase(calEvent);
          $calendar.weekCalendar("updateEvent", calEvent);
          setTimeout(function(){
@@ -602,7 +590,6 @@ $(document).ready(function() {
          });
       },
       eventResize : function(calEvent, $event) {
-        calEvent.published = 1;
          updateDatabase(calEvent);
          $calendar.weekCalendar("updateEvent", calEvent);
          setTimeout(function(){
@@ -690,8 +677,7 @@ $(document).ready(function() {
                            }
                         };
                         calEvent.body = bodyField.val();
-			                  calEvent.room = roomField.val();
-                        calEvent.published = 1;
+			            calEvent.room = roomField.val();
 
                         if(calEvent.realId){
                             calEvent.id = realId;
@@ -764,7 +750,7 @@ $(document).ready(function() {
 
          var startField = $dialogContent.find("select[name='start']").val(calEvent.start);
          var endField = $dialogContent.find("select[name='end']").val(calEvent.end);
-
+/*
          if(calEvent.start.getHours() <= overflowHours){
             var newDate = new Date();
             newDate.setDate(calEvent.start.getDate());
@@ -772,6 +758,7 @@ $(document).ready(function() {
             setupStartAndEndTimeFields(startField, endField, calEvent, $calendar.weekCalendar("getTimeslotTimes", newDate));
          } else
             setupStartAndEndTimeFields(startField, endField, calEvent, $calendar.weekCalendar("getTimeslotTimes", calEvent.start));
+*/
          $(window).resize().resize(); //fixes a bug in modal overlay size ??
 
       },
@@ -790,37 +777,14 @@ $(document).ready(function() {
    function getEventData(start, end) {
        if(loggedIn){
            socket.emit('getAllEventsWithinTime', {start: start.getTime()/1000, end: end.getTime()/1000});
-           $('#calendar').weekCalendar("scrollToCurrentHour");
        }
       return {events:[]};
    }
-
-
-   /*
-    * Sets up the start and end time fields in the calendar event
-    * form for editing based on the calendar event being edited
-    */
-   function setupStartAndEndTimeFields($startTimeField, $endTimeField, calEvent, timeslotTimes) {
-      for (var i = 0; i < timeslotTimes.length; i++) {
-         var startTime = timeslotTimes[i].start;
-         var endTime = timeslotTimes[i].end;
-         var startSelected = "";
-         if (startTime.getTime() === calEvent.start.getTime()) {
-            startSelected = "selected=\"selected\"";
-         }
-         var endSelected = "";
-         if (endTime.getTime() === calEvent.end.getTime()) {
-            endSelected = "selected=\"selected\"";
-         }
-         $startTimeField.append("<option value=\"" + startTime + "\" " + startSelected + ">" + timeslotTimes[i].startFormatted + "</option>");
-         $endTimeField.append("<option value=\"" + endTime + "\" " + endSelected + ">" + timeslotTimes[i].endFormatted + "</option>");
-
-      }
-      $endTimeOptions = $endTimeField.find("option");
-      $startTimeField.trigger("change");
-   }
-   setInterval(function() {
-    $('#calendar').weekCalendar("refresh");
-    $('#calendar').weekCalendar("scrollToCurrentHour");
-}, 300000);
+   console.log(name);
+   if(name == "Starmýri"){
+       setInterval(function() {
+           $('#calendar').weekCalendar("refresh");
+           $('#calendar').weekCalendar("scrollToCurrentHour");
+        }, 300000);
+    }
 });
